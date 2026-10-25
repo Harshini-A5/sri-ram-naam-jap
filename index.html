@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sri Ram Naam Jap Counter</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 24px 12px;
+    min-height: 100vh;
+    font-family: Georgia, serif;
+    text-align: center;
+    color: #702414;
+    background: linear-gradient(135deg, #fff5d8, #ffc66b, #fff0c9);
+}
+
+.container {
+    max-width: 650px;
+    margin: auto;
+    padding: 25px 20px;
+    background: #fffaf0;
+    border: 2px solid #d99b31;
+    border-radius: 26px;
+    box-shadow: 0 12px 35px #8b431c30;
+}
+
+h1 {
+    color: #8e1e12;
+    font-size: clamp(28px, 6vw, 42px);
+    margin-bottom: 8px;
+}
+
+.subtitle { line-height: 1.6; }
+
+.image-frame {
+    position: relative;
+    max-width: 370px;
+    height: 350px;
+    margin: 22px auto;
+    overflow: hidden;
+    border: 5px solid #e3ad43;
+    border-radius: 180px 180px 20px 20px;
+    background: linear-gradient(#ffe6a0, #d98a27);
+    box-shadow: 0 6px 20px #8b431c30;
+}
+
+.ram-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.5s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    color: #7b2c12;
+    font-size: 18px;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.count-card {
+    margin: 22px 0;
+    padding: 18px 12px;
+    border: 1px solid #e5b34c;
+    border-radius: 18px;
+    background: #fff0bd;
+}
+
+#count {
+    margin: 8px;
+    color: #bd2418;
+    font-size: 56px;
+    font-weight: bold;
+}
+
+.remaining {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+#remaining {
+    color: #a32b12;
+    font-size: 30px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 18px;
+    margin: 14px 0 8px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #ead7ae;
+    border: 1px solid #d6a34a;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #e46b16, #a91d0b);
+    transition: width 0.4s ease;
+}
+
+#progressText {
+    font-size: 15px;
+    color: #75401c;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 7px 0;
+    border: 2px solid #e5b34c;
+    border-radius: 12px;
+    background: #fffdf6;
+    color: #642a18;
+    font: 17px Georgia, serif;
+}
+
+textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    text-align: left;
+    font-weight: bold;
+}
+
+button {
+    padding: 13px 17px;
+    margin: 7px 4px;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    background: #b6380b;
+    font: bold 16px Georgia, serif;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#stopVoice { background: #795b50; }
+#resetButton { background: #8b6a25; }
+#nextButton { background: #6f2c15; }
+
+#voiceStatus {
+    overflow-wrap: anywhere;
+    padding: 12px;
+    border-radius: 15px;
+    background: #fff0c3;
+    line-height: 1.5;
+}
+
+.blessing {
+    margin-top: 24px;
+    font-size: 23px;
+    font-weight: bold;
+    color: #8e1e12;
+}
+
+@media (max-width: 450px) {
+    .container { padding: 20px 13px; }
+    .image-frame { height: 290px; }
+}
+</style>
+</head>
+
+<body>
+<main class="container">
+    <div style="font-size:32px">🙏 🪷 🙏</div>
+
+    <h1>Sri Ram Naam Jap</h1>
+    <p class="subtitle">
+        Chant with devotion • Feel the peace • Jai Shri Ram
+    </p>
+
+    <div class="image-frame">
+        <img src="sriram.jpg" alt="Lord Sri Ram" class="ram-image" id="ramImage">
+        <div class="image-overlay" id="imageMessage">
+            Chant Sri Ram to reveal the image 🙏
+        </div>
+    </div>
+
+    <section class="count-card">
+        <h2>Total Sri Ram Chants</h2>
+        <div id="count" aria-live="polite">0</div>
+
+        <label for="target">Choose your image completion target:</label>
+        <select id="target" style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:1px solid #d99b31;font-size:16px">
+            <option value="108">108 chants</option>
+            <option value="51">51 chants</option>
+            <option value="100">100 chants</option>
+            <option value="1008">1008 chants</option>
+        </select>
+
+        <p class="remaining">
+            Chants remaining to complete the image:
+            <br><span id="remaining">108</span>
+        </p>
+
+        <div class="progress-track">
+            <div id="progressBar"></div>
+        </div>
+        <p id="progressText">0% completed</p>
+    </section>
+
+    <label for="sriramInput">✍️ Type your chant:</label>
+    <textarea id="sriramInput" placeholder="Type Sriram or Sri Ram here..."></textarea>
+
+    <p>🎤 Or chant using your microphone:</p>
+    <button id="startVoice" type="button">🎤 Start Chanting</button>
+    <button id="stopVoice" type="button" disabled>⏹ Stop Chanting</button>
+    <button id="resetButton" type="button">🔄 Reset Count</button>
+    <button id="nextButton" type="button">View Image Formation →</button>
+
+    <p id="voiceStatus" role="status">
+        Click Start Chanting to begin.
+    </p>
+
+    <div class="blessing">॥ जय श्री राम ॥</div>
+    <p>May the divine name of Sri Ram bring peace to your heart. 🪔</p>
+</main>
+
+<script>
+const input = document.getElementById("sriramInput");
+const countDisplay = document.getElementById("count");
+const targetSelect = document.getElementById("target");
+const remainingDisplay = document.getElementById("remaining");
+const progressBar = document.getElementById("progressBar");
+const progressText = document.getElementById("progressText");
+const ramImage = document.getElementById("ramImage");
+const imageMessage = document.getElementById("imageMessage");
+const startButton = document.getElementById("startVoice");
+const stopButton = document.getElementById("stopVoice");
+const resetButton = document.getElementById("resetButton");
+const nextButton = document.getElementById("nextButton");
+const voiceStatus = document.getElementById("voiceStatus");
+
+// Keep the saved total when returning from progress.html or refreshing.
+let savedCount = Number(localStorage.getItem("sriramCount")) || 0;
+let voiceCount = 0;
+let listening = false;
+let recognition = null;
+
+const savedTarget = localStorage.getItem("sriramTarget");
+if (savedTarget && [...targetSelect.options].some(option => option.value === savedTarget)) {
+    targetSelect.value = savedTarget;
+}
+
+function countChants(text) {
+    const matches = text.match(/sri\s*ram/gi);
+    return matches ? matches.length : 0;
+}
+
+function getCurrentTotal() {
+    return savedCount + countChants(input.value) + voiceCount;
+}
+
+function updateDisplay(total) {
+    const target = Number(targetSelect.value);
+    const remaining = Math.max(0, target - total);
+    const progress = Math.min(100, (total / target) * 100);
+
+    countDisplay.textContent = total;
+    remainingDisplay.textContent = remaining;
+    progressBar.style.width = progress + "%";
+    progressText.textContent = progress.toFixed(1) + "% completed";
+
+    // Reveal the existing image gradually as the count increases.
+    ramImage.style.clipPath = "inset(0 0 " + (100 - progress) + "% 0)";
+
+    if (total === 0) {
+        imageMessage.textContent = "Chant Sri Ram to reveal the image 🙏";
+        imageMessage.style.display = "flex";
+    } else {
+        imageMessage.style.display = "none";
+    }
+
+    if (remaining === 0) {
+        progressText.textContent = "100% completed — Jai Shri Ram! 🙏";
+    }
+
+    // Save the total and selected target for the separate progress page.
+    localStorage.setItem("sriramCount", String(total));
+    localStorage.setItem("sriramTarget", String(target));
+}
+
+input.addEventListener("input", function () {
+    updateDisplay(getCurrentTotal());
+});
+
+targetSelect.addEventListener("change", function () {
+    updateDisplay(getCurrentTotal());
+});
+
+resetButton.addEventListener("click", function () {
+    if (recognition && listening) {
+        recognition.stop();
+    }
+
+    input.value = "";
+    savedCount = 0;
+    voiceCount = 0;
+    updateDisplay(0);
+    voiceStatus.textContent = "Count reset! Start chanting again. 🙏";
+});
+
+nextButton.addEventListener("click", function () {
+    updateDisplay(getCurrentTotal());
+    window.location.href = "progress.html";
+});
+
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+if (!SpeechRecognition) {
+    voiceStatus.textContent =
+        "Voice recognition is unavailable. Try opening this page in Google Chrome.";
+    startButton.disabled = true;
+} else {
+    recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-IN";
+
+    startButton.addEventListener("click", function () {
+        if (listening) return;
+
+        listening = true;
+        startButton.disabled = true;
+        stopButton.disabled = false;
+        voiceStatus.textContent = "Starting microphone...";
+
+        try {
+            recognition.start();
+        } catch (error) {
+            listening = false;
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            voiceStatus.textContent = "Could not start: " + error.message;
+        }
+    });
+
+    recognition.onstart = function () {
+        voiceStatus.textContent = "🎤 Listening! Chant Sri Ram now...";
+    };
+
+    recognition.onresult = function (event) {
+        let transcript = "";
+        let confirmedTranscript = "";
+
+        for (let i = 0; i < event.results.length; i++) {
+            const words = event.results[i][0].transcript;
+            transcript += words + " ";
+
+            if (event.results[i].isFinal) {
+                confirmedTranscript += words + " ";
+            }
+        }
+
+        voiceStatus.textContent = transcript.trim()
+            ? "I heard: " + transcript.trim()
+            : "Listening for Sri Ram...";
+
+        voiceCount = countChants(confirmedTranscript);
+        updateDisplay(getCurrentTotal());
+    };
+
+    recognition.onerror = function (event) {
+        voiceStatus.textContent = "Voice recognition error: " + event.error;
+    };
+
+    recognition.onend = function () {
+        listening = false;
+        startButton.disabled = false;
+        stopButton.disabled = true;
+    };
+
+    stopButton.addEventListener("click", function () {
+        if (recognition && listening) {
+            voiceStatus.textContent = "Stopping microphone...";
+            recognition.stop();
+        }
+    });
+}
+
+// Display the saved count as soon as the page opens.
+updateDisplay(getCurrentTotal());
+</script>
+</body>
+</html>
