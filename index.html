@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -419,5 +419,203 @@ updateDisplay(getCurrentTotal());
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase.js"></script>
 
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sri Ram Naam Jap - Login</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fff3d6, #f6c56e);
+      color: #5b260c;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px 24px;
+      background: #fffaf0;
+      border-radius: 18px;
+      box-shadow: 0 8px 25px #6b320b30;
+      text-align: center;
+    }
+
+    h1 { margin-top: 0; color: #a33a0a; }
+    p { line-height: 1.5; }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #d9a66b;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #a33a0a;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #7d2905; }
+    .google { background: #fff; color: #333; border: 1px solid #ccc; }
+    .switch { background: transparent; color: #a33a0a; }
+    #message { overflow-wrap: anywhere; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>🙏 Sri Ram Naam Jap</h1>
+    <p id="description">Sign in to save your chanting progress.</p>
+
+    <form id="authForm">
+      <input id="email" type="email" placeholder="Email address"
+             autocomplete="email" required>
+      <input id="password" type="password" placeholder="Password"
+             autocomplete="current-password" minlength="6" required>
+      <button id="submitBtn" type="submit">Login</button>
+    </form>
+
+    <button class="switch" id="switchBtn" type="button">
+      New here? Create an account
+    </button>
+
+    <button class="google" id="googleBtn" type="button">
+      Continue with Google
+    </button>
+
+    <p id="message" role="status"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./supabase.js"></script>
+  <script>
+    const client = window.supabaseClient;
+    const form = document.getElementById("authForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const submitBtn = document.getElementById("submitBtn");
+    const switchBtn = document.getElementById("switchBtn");
+    const googleBtn = document.getElementById("googleBtn");
+    const description = document.getElementById("description");
+    const message = document.getElementById("message");
+
+    let isSignup = false;
+
+    function showMessage(text) {
+      message.textContent = text;
+    }
+
+    switchBtn.addEventListener("click", () => {
+      isSignup = !isSignup;
+      submitBtn.textContent = isSignup ? "Create Account" : "Login";
+      switchBtn.textContent = isSignup
+        ? "Already registered? Login"
+        : "New here? Create an account";
+      description.textContent = isSignup
+        ? "Create an account to save your chanting progress."
+        : "Sign in to save your chanting progress.";
+      passwordInput.autocomplete = isSignup ? "new-password" : "current-password";
+      showMessage("");
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!client) {
+        showMessage("Connection error. Please check supabase.js.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      showMessage("Please wait...");
+
+      try {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        if (isSignup) {
+          const { data, error } = await client.auth.signUp({
+            email,
+            password,
+            options: {
+              emailRedirectTo: window.location.origin + window.location.pathname
+            }
+          });
+
+          if (error) throw error;
+
+          if (data.session) {
+            window.location.href = "./jap.html";
+          } else {
+            showMessage("Account created. Check your email to confirm, then log in.");
+          }
+        } else {
+          const { error } = await client.auth.signInWithPassword({
+            email,
+            password
+          });
+
+          if (error) throw error;
+          window.location.href = "./jap.html";
+        }
+      } catch (error) {
+        showMessage(error.message || "Something went wrong.");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      if (!client) {
+        showMessage("Connection error. Please check supabase.js.");
+        return;
+      }
+
+      googleBtn.disabled = true;
+      showMessage("Opening Google sign-in...");
+
+      try {
+        const { error } = await client.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            // redirectTo: window.location.origin + "/sri-ram-naam-jap/"
+            // redirectTo: "https://harshini-a5.github.io/sri-ram-naam-jap/"
+            redirectTo: "https://harshini-a5.github.io/sri-ram-naam-jap/jap.html"
+          }
+        });
+
+        if (error) throw error;
+      } catch (error) {
+        showMessage(error.message || "Google sign-in failed.");
+        googleBtn.disabled = false;
+      }
+    });
+
+    client?.auth.getSession().then(({ data, error }) => {
+      if (error) showMessage(error.message);
+      else if (data.session) window.location.href = "./jap.html";
+    });
+  </script>
 </body>
 </html>
