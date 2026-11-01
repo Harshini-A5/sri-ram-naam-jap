@@ -3,193 +3,386 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sri Ram Naam Jap Counter</title>
+<title>Sri Ram Naam Jap</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; }
+:root {
+    --navy: #09172d;
+    --gold: #d8b66a;
+    --gold-light: #f1d99b;
+    --ivory: #fff8e9;
+    --muted: #d7c9a8;
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
-    padding: 24px 12px;
     min-height: 100vh;
-    font-family: Georgia, serif;
+    padding: 22px 14px 36px;
+    color: var(--ivory);
+    font-family: "Playfair Display", Georgia, serif;
     text-align: center;
-    color: #702414;
-    background: linear-gradient(135deg, #fff5d8, #ffc66b, #fff0c9);
+    background:
+        radial-gradient(ellipse at 50% 0%, #203b5b 0%, transparent 52%),
+        linear-gradient(145deg, #071225, var(--navy) 55%, #101f36);
+}
+
+.topbar {
+    max-width: 900px;
+    margin: 0 auto 18px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.login-link {
+    display: inline-block;
+    padding: 10px 17px;
+    color: var(--navy);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    border: 1px solid #f5dfaa;
+    border-radius: 999px;
+    text-decoration: none;
+    font: 600 13px "Cinzel", Georgia, serif;
+    box-shadow: 0 4px 18px #0005;
 }
 
 .container {
-    max-width: 650px;
-    margin: auto;
-    padding: 25px 20px;
-    background: #fffaf0;
-    border: 2px solid #d99b31;
-    border-radius: 26px;
-    box-shadow: 0 12px 35px #8b431c30;
+    position: relative;
+    width: min(100%, 760px);
+    margin: 0 auto;
+    padding: 30px clamp(16px, 4vw, 38px);
+    overflow: hidden;
+    border: 1px solid var(--gold);
+    border-radius: 25px;
+    background: linear-gradient(160deg, #142946f2, #0b1a30f5);
+    box-shadow: 0 20px 55px #0007, inset 0 0 35px #d8b66a0c;
+}
+
+.container::before {
+    content: "";
+    position: absolute;
+    inset: 9px;
+    border: 1px solid #d8b66a55;
+    border-radius: 18px;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+.om-symbol {
+    color: var(--gold-light);
+    font-size: 34px;
+    letter-spacing: 8px;
+    margin-bottom: 8px;
+    text-shadow: 0 0 22px #e8c77866;
 }
 
 h1 {
-    color: #8e1e12;
-    font-size: clamp(28px, 6vw, 42px);
-    margin-bottom: 8px;
+    margin: 5px 0 10px;
+    color: var(--gold-light);
+    font: 600 clamp(27px, 6vw, 43px) "Cinzel", Georgia, serif;
+    letter-spacing: 1px;
 }
 
-.subtitle { line-height: 1.6; }
+.subtitle {
+    margin: 0 auto 24px;
+    max-width: 520px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+}
 
+.section-label {
+    display: block;
+    margin: 20px 0 8px;
+    color: var(--gold-light);
+    text-align: left;
+    font: 600 14px "Cinzel", Georgia, serif;
+    letter-spacing: .4px;
+}
+
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 115px;
+    padding: 15px;
+    resize: vertical;
+    color: #302719;
+    background: var(--ivory);
+    border: 1px solid var(--gold);
+    border-radius: 13px;
+    outline: none;
+    font: 17px Georgia, serif;
+    line-height: 1.5;
+}
+
+textarea:focus,
+select:focus {
+    border-color: var(--gold-light);
+    box-shadow: 0 0 0 3px #d8b66a30;
+}
+
+textarea::placeholder {
+    color: #8c806c;
+}
+
+.mic-heading {
+    margin: 22px 0 8px;
+    color: var(--muted);
+    font-size: 16px;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 9px;
+    margin: 12px 0;
+}
+
+button {
+    min-height: 45px;
+    padding: 11px 17px;
+    border: 1px solid var(--gold);
+    border-radius: 999px;
+    color: var(--navy);
+    background: linear-gradient(135deg, var(--gold-light), var(--gold));
+    font: 600 13px "Cinzel", Georgia, serif;
+    cursor: pointer;
+    transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+}
+
+button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.08);
+    box-shadow: 0 7px 18px #0005;
+}
+
+button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+#stopVoice {
+    color: var(--ivory);
+    background: #5c5260;
+    border-color: #b5a5a8;
+}
+
+#resetButton {
+    color: var(--ivory);
+    background: #8a542c;
+    border-color: #d99b62;
+}
+
+#nextButton {
+    color: #fff8e9;
+    background: linear-gradient(135deg, #b66a32, #8e3f24);
+    border-color: var(--gold-light);
+}
+
+#voiceStatus {
+    min-height: 48px;
+    margin: 15px 0 20px;
+    padding: 13px 15px;
+    overflow-wrap: anywhere;
+    color: var(--gold-light);
+    background: #071326a8;
+    border: 1px solid #d8b66a66;
+    border-radius: 13px;
+    line-height: 1.5;
+}
 
 .count-card {
-    margin: 22px 0;
-    padding: 18px 12px;
-    border: 1px solid #e5b34c;
-    border-radius: 18px;
-    background: #fff0bd;
+    margin: 23px 0 8px;
+    padding: 21px 17px;
+    color: var(--ivory);
+    background: linear-gradient(145deg, #1b3453, #10233d);
+    border: 1px solid var(--gold);
+    border-radius: 19px;
+    box-shadow: inset 0 0 25px #d8b66a0b;
+}
+
+.count-card h2 {
+    margin: 0 0 8px;
+    color: var(--gold-light);
+    font: 600 19px "Cinzel", Georgia, serif;
 }
 
 #count {
-    margin: 8px;
-    color: #bd2418;
-    font-size: 56px;
-    font-weight: bold;
+    margin: 5px 0 14px;
+    color: var(--gold-light);
+    font: 700 clamp(48px, 10vw, 65px) "Cinzel", Georgia, serif;
+    text-shadow: 0 0 20px #e4c16a44;
+}
+
+.count-card .section-label {
+    margin-top: 14px;
+}
+
+select {
+    width: 100%;
+    margin-top: 5px;
+    padding: 12px;
+    color: #302719;
+    background: var(--ivory);
+    border: 1px solid var(--gold);
+    border-radius: 10px;
+    font: 16px Georgia, serif;
 }
 
 .remaining {
-    font-size: 19px;
-    font-weight: bold;
+    margin: 18px 0 8px;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.6;
 }
 
 #remaining {
-    color: #a32b12;
-    font-size: 30px;
+    color: var(--gold-light);
+    font: 700 32px "Cinzel", Georgia, serif;
 }
 
 .progress-track {
     width: 100%;
-    height: 18px;
+    height: 17px;
     margin: 14px 0 8px;
     overflow: hidden;
-    border-radius: 20px;
-    background: #ead7ae;
-    border: 1px solid #d6a34a;
+    background: #071326;
+    border: 1px solid #c9a85e;
+    border-radius: 99px;
 }
 
 #progressBar {
     width: 0%;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, #e46b16, #a91d0b);
-    transition: width 0.4s ease;
+    background: linear-gradient(90deg, #c87532, #f2d58e);
+    transition: width .4s ease;
 }
 
 #progressText {
-    font-size: 15px;
-    color: #75401c;
-}
-
-textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 7px 0;
-    border: 2px solid #e5b34c;
-    border-radius: 12px;
-    background: #fffdf6;
-    color: #642a18;
-    font: 17px Georgia, serif;
-}
-
-textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-label {
-    display: block;
-    margin-top: 18px;
-    text-align: left;
-    font-weight: bold;
-}
-
-button {
-    padding: 13px 17px;
-    margin: 7px 4px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    background: #b6380b;
-    font: bold 16px Georgia, serif;
-    cursor: pointer;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-#stopVoice { background: #795b50; }
-#resetButton { background: #8b6a25; }
-#nextButton { background: #6f2c15; }
-
-#voiceStatus {
-    overflow-wrap: anywhere;
-    padding: 12px;
-    border-radius: 15px;
-    background: #fff0c3;
-    line-height: 1.5;
+    margin-bottom: 0;
+    color: var(--gold-light);
+    font-size: 14px;
 }
 
 .blessing {
-    margin-top: 24px;
-    font-size: 23px;
-    font-weight: bold;
-    color: #8e1e12;
+    margin: 26px 0 8px;
+    color: var(--gold-light);
+    font: 600 25px "Cinzel", Georgia, serif;
 }
 
-@media (max-width: 450px) {
-    .container { padding: 20px 13px; }
-   
+.footer-note {
+    margin: 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 14px 9px 25px;
+    }
+
+    .container {
+        padding: 25px 15px;
+        border-radius: 20px;
+    }
+
+    .container::before {
+        inset: 6px;
+    }
+
+    .controls {
+        gap: 7px;
+    }
+
+    button {
+        padding: 10px 13px;
+        font-size: 11px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
 }
 </style>
 </head>
 
 <body>
-    <div style="text-align: right; padding: 12px 20px;">
-  <a href="./login.html"
-     style="display: inline-block; padding: 10px 18px;
-            background: #a33a0a; color: white;
-            text-decoration: none; border-radius: 8px;
-            font-weight: bold;">
-    Login / Sign Up
-  </a>
+
+<div class="topbar">
+    <a class="login-link" href="./login.html">Login / Sign Up</a>
 </div>
+
 <main class="container">
-    <div style="font-size:32px">🙏 🪷 🙏</div>
+<div class="content">
+
+    <div class="om-symbol">🙏 🪷 🙏</div>
 
     <h1>Sri Ram Naam Jap</h1>
+
     <p class="subtitle">
         Chant with devotion • Feel the peace • Jai Shri Ram
     </p>
 
-    
+    <label class="section-label" for="sriramInput">
+        ✍️ Type your chant
+    </label>
 
-    
+    <textarea
+        id="sriramInput"
+        placeholder="Type Sri Ram or Shri Ram here..."
+    ></textarea>
 
-    <label for="sriramInput">✍️ Type your chant:</label>
-    <textarea id="sriramInput" placeholder="Type Sriram or Sri Ram here..."></textarea>
+    <p class="mic-heading">
+        🎤 Or chant using your microphone
+    </p>
 
-    <p>🎤 Or chant using your microphone:</p>
-    <button id="startVoice" type="button">🎤 Start Chanting</button>
-    <button id="stopVoice" type="button" disabled>⏹ Stop Chanting</button>
-    <button id="resetButton" type="button">🔄 Reset Count</button>
-    <button id="nextButton" type="button">View Image Formation →</button>
+    <div class="controls">
+        <button id="startVoice" type="button">
+            🎤 Start Chanting
+        </button>
+
+        <button id="stopVoice" type="button" disabled>
+            ⏹ Stop Chanting
+        </button>
+
+        <button id="resetButton" type="button">
+            ↻ Reset Count
+        </button>
+
+        <button id="nextButton" type="button">
+            View Image Formation →
+        </button>
+    </div>
 
     <p id="voiceStatus" role="status">
         Click Start Chanting to begin.
     </p>
+
     <section class="count-card">
+
         <h2>Total Sri Ram Chants</h2>
+
         <div id="count" aria-live="polite">0</div>
 
-        <label for="target">Choose your image completion target:</label>
-        <select id="target" style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:1px solid #d99b31;font-size:16px">
+        <label class="section-label" for="target">
+            Choose your image completion target
+        </label>
+
+        <select id="target">
             <option value="108">108 chants</option>
             <option value="51">51 chants</option>
             <option value="100">100 chants</option>
@@ -198,16 +391,25 @@ button:disabled {
 
         <p class="remaining">
             Chants remaining to complete the image:
-            <br><span id="remaining">108</span>
+            <br>
+            <span id="remaining">108</span>
         </p>
 
         <div class="progress-track">
             <div id="progressBar"></div>
         </div>
+
         <p id="progressText">0% completed</p>
+
     </section>
+
     <div class="blessing">॥ जय श्री राम ॥</div>
-    <p>May the divine name of Sri Ram bring peace to your heart. 🪔</p>
+
+    <p class="footer-note">
+        May the divine name of Sri Ram bring peace to your heart. 🪔
+    </p>
+
+</div>
 </main>
 
 <script>
@@ -217,7 +419,6 @@ const targetSelect = document.getElementById("target");
 const remainingDisplay = document.getElementById("remaining");
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
-
 
 const startButton = document.getElementById("startVoice");
 const stopButton = document.getElementById("stopVoice");
@@ -232,7 +433,11 @@ let listening = false;
 let recognition = null;
 
 const savedTarget = localStorage.getItem("sriramTarget");
-if (savedTarget && [...targetSelect.options].some(option => option.value === savedTarget)) {
+
+if (
+    savedTarget &&
+    [...targetSelect.options].some(option => option.value === savedTarget)
+) {
     targetSelect.value = savedTarget;
 }
 
@@ -255,10 +460,9 @@ function updateDisplay(total) {
     progressBar.style.width = progress + "%";
     progressText.textContent = progress.toFixed(1) + "% completed";
 
-   
-
     if (remaining === 0) {
-        progressText.textContent = "100% completed — Jai Shri Ram! 🙏";
+        progressText.textContent =
+            "100% completed — Jai Shri Ram! 🙏";
     }
 
     // Save the total and selected target for the separate progress page.
@@ -282,8 +486,11 @@ resetButton.addEventListener("click", function () {
     input.value = "";
     savedCount = 0;
     voiceCount = 0;
+
     updateDisplay(0);
-    voiceStatus.textContent = "Count reset! Start chanting again. 🙏";
+
+    voiceStatus.textContent =
+        "Count reset! Start chanting again. 🙏";
 });
 
 nextButton.addEventListener("click", function () {
@@ -295,43 +502,57 @@ const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
 
 if (!SpeechRecognition) {
+
     voiceStatus.textContent =
         "Voice recognition is unavailable. Try opening this page in Google Chrome.";
+
     startButton.disabled = true;
+
 } else {
+
     recognition = new SpeechRecognition();
+
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "en-IN";
 
     startButton.addEventListener("click", function () {
+
         if (listening) return;
 
         listening = true;
         startButton.disabled = true;
         stopButton.disabled = false;
+
         voiceStatus.textContent = "Starting microphone...";
 
         try {
             recognition.start();
         } catch (error) {
+
             listening = false;
             startButton.disabled = false;
             stopButton.disabled = true;
-            voiceStatus.textContent = "Could not start: " + error.message;
+
+            voiceStatus.textContent =
+                "Could not start: " + error.message;
         }
     });
 
     recognition.onstart = function () {
-        voiceStatus.textContent = "🎤 Listening! Chant Sri Ram now...";
+        voiceStatus.textContent =
+            "🎤 Listening! Chant Sri Ram now...";
     };
 
     recognition.onresult = function (event) {
+
         let transcript = "";
         let confirmedTranscript = "";
 
         for (let i = 0; i < event.results.length; i++) {
+
             const words = event.results[i][0].transcript;
+
             transcript += words + " ";
 
             if (event.results[i].isFinal) {
@@ -344,22 +565,29 @@ if (!SpeechRecognition) {
             : "Listening for Sri Ram...";
 
         voiceCount = countChants(confirmedTranscript);
+
         updateDisplay(getCurrentTotal());
     };
 
     recognition.onerror = function (event) {
-        voiceStatus.textContent = "Voice recognition error: " + event.error;
+        voiceStatus.textContent =
+            "Voice recognition error: " + event.error;
     };
 
     recognition.onend = function () {
+
         listening = false;
         startButton.disabled = false;
         stopButton.disabled = true;
     };
 
     stopButton.addEventListener("click", function () {
+
         if (recognition && listening) {
-            voiceStatus.textContent = "Stopping microphone...";
+
+            voiceStatus.textContent =
+                "Stopping microphone...";
+
             recognition.stop();
         }
     });
@@ -369,25 +597,21 @@ if (!SpeechRecognition) {
 updateDisplay(getCurrentTotal());
 </script>
 
-<!-- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase.js"></script>-->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./supabase.js"></script>
 
 <script>
 (async function () {
+
     const { data, error } =
         await window.supabaseClient.auth.getSession();
 
     if (error || !data.session) {
         window.location.replace("./index.html");
     }
+
 })();
 </script>
 
-</body>
-</html>
 </body>
 </html>
