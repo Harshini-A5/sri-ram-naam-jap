@@ -36,40 +36,6 @@ h1 {
 
 .subtitle { line-height: 1.6; }
 
-.image-frame {
-    position: relative;
-    max-width: 370px;
-    height: 350px;
-    margin: 22px auto;
-    overflow: hidden;
-    border: 5px solid #e3ad43;
-    border-radius: 180px 180px 20px 20px;
-    background: linear-gradient(#ffe6a0, #d98a27);
-    box-shadow: 0 6px 20px #8b431c30;
-}
-
-.ram-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 0.5s ease;
-}
-
-.image-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    color: #7b2c12;
-    font-size: 18px;
-    font-weight: bold;
-    pointer-events: none;
-}
 
 .count-card {
     margin: 22px 0;
@@ -179,7 +145,7 @@ button:disabled {
 
 @media (max-width: 450px) {
     .container { padding: 20px 13px; }
-    .image-frame { height: 290px; }
+   
 }
 </style>
 </head>
@@ -202,12 +168,7 @@ button:disabled {
         Chant with devotion • Feel the peace • Jai Shri Ram
     </p>
 
-    <div class="image-frame">
-        <img src="sriram.jpg" alt="Lord Sri Ram" class="ram-image" id="ramImage">
-        <div class="image-overlay" id="imageMessage">
-            Chant Sri Ram to reveal the image 🙏
-        </div>
-    </div>
+    
 
     <section class="count-card">
         <h2>Total Sri Ram Chants</h2>
@@ -256,8 +217,8 @@ const targetSelect = document.getElementById("target");
 const remainingDisplay = document.getElementById("remaining");
 const progressBar = document.getElementById("progressBar");
 const progressText = document.getElementById("progressText");
-const ramImage = document.getElementById("ramImage");
-const imageMessage = document.getElementById("imageMessage");
+
+
 const startButton = document.getElementById("startVoice");
 const stopButton = document.getElementById("stopVoice");
 const resetButton = document.getElementById("resetButton");
@@ -294,15 +255,7 @@ function updateDisplay(total) {
     progressBar.style.width = progress + "%";
     progressText.textContent = progress.toFixed(1) + "% completed";
 
-    // Reveal the existing image gradually as the count increases.
-    ramImage.style.clipPath = "inset(0 0 " + (100 - progress) + "% 0)";
-
-    if (total === 0) {
-        imageMessage.textContent = "Chant Sri Ram to reveal the image 🙏";
-        imageMessage.style.display = "flex";
-    } else {
-        imageMessage.style.display = "none";
-    }
+   
 
     if (remaining === 0) {
         progressText.textContent = "100% completed — Jai Shri Ram! 🙏";
