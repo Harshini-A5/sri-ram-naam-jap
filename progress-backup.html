@@ -1,0 +1,240 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Ram - Image Formation</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 24px 12px;
+            min-height: 100vh;
+            text-align: center;
+            font-family: Georgia, serif;
+            color: #702414;
+            background: linear-gradient(135deg, #fff5d8, #ffc66b, #fff0c9);
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 25px 20px;
+            background: #fffaf0;
+            border: 2px solid #d99b31;
+            border-radius: 26px;
+            box-shadow: 0 12px 35px #8b431c30;
+        }
+
+        h1 {
+            color: #8e1e12;
+            font-size: clamp(27px, 6vw, 40px);
+        }
+
+        .image-frame {
+            position: relative;
+            max-width: 370px;
+            height: 350px;
+            margin: 22px auto;
+            overflow: hidden;
+            border: 5px solid #e3ad43;
+            border-radius: 180px 180px 20px 20px;
+            background: linear-gradient(#ffe6a0, #d98a27);
+        }
+
+        #ramImage {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 0.5s ease;
+        }
+
+        #imageMessage {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            color: #7b2c12;
+            font-weight: bold;
+            font-size: 18px;
+            pointer-events: none;
+        }
+
+        .count-card {
+            margin: 20px 0;
+            padding: 18px 12px;
+            background: #fff0bd;
+            border: 1px solid #e5b34c;
+            border-radius: 18px;
+        }
+
+        #count {
+            margin: 8px;
+            font-size: 56px;
+            font-weight: bold;
+            color: #bd2418;
+        }
+
+        .remaining {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        #remaining {
+            display: block;
+            margin: 8px;
+            font-size: 34px;
+            color: #a32b12;
+        }
+
+        .track {
+            height: 18px;
+            margin: 14px 0 8px;
+            overflow: hidden;
+            background: #ead7ae;
+            border: 1px solid #d6a34a;
+            border-radius: 20px;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #e46b16, #a91d0b);
+            transition: width 0.4s ease;
+        }
+
+        #progressText {
+            color: #75401c;
+            font-size: 16px;
+        }
+
+        button {
+            margin: 7px 4px;
+            padding: 13px 18px;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            background: #b6380b;
+            font: bold 16px Georgia, serif;
+            cursor: pointer;
+        }
+
+        #resetButton { background: #8b6a25; }
+
+        .blessing {
+            margin-top: 25px;
+            color: #8e1e12;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        @media (max-width: 450px) {
+            .container { padding: 20px 13px; }
+            .image-frame { height: 290px; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <div style="font-size:32px">🙏 🪷 🙏</div>
+
+        <h1>Sri Ram Image Formation</h1>
+        <p>Every chant brings you closer to completing the image.</p>
+
+        <div class="image-frame">
+            <img id="ramImage" src="sriram.jpg" alt="Lord Sri Ram">
+            <div id="imageMessage">
+                Continue chanting to reveal the image 🙏
+            </div>
+        </div>
+
+        <section class="count-card">
+            <h2>Total Sri Ram Chants</h2>
+            <div id="count">0</div>
+
+            <p class="remaining">
+                Chants remaining
+                <span id="remaining">108</span>
+            </p>
+
+            <div class="track">
+                <div id="progressBar"></div>
+            </div>
+
+            <p id="progressText">0% completed</p>
+        </section>
+
+        <button id="backButton">← Back to Chanting</button>
+        <button id="resetButton">🔄 Reset Count</button>
+
+        <div class="blessing">॥ जय श्री राम ॥</div>
+        <p>May Sri Ram bless you with peace and happiness. 🪔</p>
+    </main>
+
+    <script>
+        const countDisplay = document.getElementById("count");
+        const remainingDisplay = document.getElementById("remaining");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        const ramImage = document.getElementById("ramImage");
+        const imageMessage = document.getElementById("imageMessage");
+
+        function readNumber(key, fallback) {
+            const value = Number(localStorage.getItem(key));
+            return Number.isFinite(value) && value >= 0
+                ? value
+                : fallback;
+        }
+
+        function updatePage() {
+            const total = readNumber("sriramCount", 0);
+            const target = Math.max(1, readNumber("sriramTarget", 108));
+            const remaining = Math.max(0, target - total);
+            const progress = Math.min(100, total / target * 100);
+
+            countDisplay.textContent = total;
+            remainingDisplay.textContent = remaining;
+            progressBar.style.width = progress + "%";
+            progressText.textContent = progress.toFixed(1) + "% completed";
+
+            ramImage.style.clipPath =
+                "inset(0 0 " + (100 - progress) + "% 0)";
+
+            imageMessage.style.display = total === 0 ? "flex" : "none";
+
+            if (total >= target) {
+                progressText.textContent =
+                    "100% completed — Jai Shri Ram! 🙏";
+            }
+        }
+
+        document.getElementById("backButton").addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+
+        document.getElementById("resetButton").addEventListener("click", () => {
+            if (confirm("Reset your chant count and image progress?")) {
+                localStorage.setItem("sriramCount", "0");
+                updatePage();
+            }
+        });
+
+        // Update if the first page changes the saved count.
+        window.addEventListener("storage", updatePage);
+
+        // Also refresh the display while this page is open.
+        setInterval(updatePage, 1000);
+
+        updatePage();
+    </script>
+</body>
+</html>

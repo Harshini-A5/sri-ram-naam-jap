@@ -4,55 +4,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sri Ram - Image Formation</title>
+    <title>Sri Ram - Divine Image Formation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
-            padding: 24px 12px;
+            padding: 28px 14px;
             min-height: 100vh;
             text-align: center;
-            font-family: Georgia, serif;
-            color: #702414;
-            background: linear-gradient(135deg, #fff5d8, #ffc66b, #fff0c9);
+            color: #f7edcf;
+            font-family: 'Playfair Display', Georgia, serif;
+            background:
+                radial-gradient(circle at top, #263d62, transparent 48%),
+                linear-gradient(145deg, #07152b, #102747, #071326);
         }
 
         .container {
-            max-width: 650px;
+            width: 100%;
+            max-width: 680px;
             margin: auto;
-            padding: 25px 20px;
-            background: #fffaf0;
-            border: 2px solid #d99b31;
-            border-radius: 26px;
-            box-shadow: 0 12px 35px #8b431c30;
+            padding: 28px 22px;
+            background: linear-gradient(145deg, #142c4b, #0b1b32);
+            border: 2px solid #c7a65b;
+            border-radius: 24px;
+            box-shadow: 0 15px 45px #0008, inset 0 0 25px #d5b66b12;
+        }
+
+        .symbol {
+            color: #e5c778;
+            font-size: 30px;
+            margin-bottom: 10px;
         }
 
         h1 {
-            color: #8e1e12;
-            font-size: clamp(27px, 6vw, 40px);
+            margin: 12px 0;
+            color: #e8ca7e;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: clamp(25px, 6vw, 39px);
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #e1d4b2;
+            font-size: 16px;
+            line-height: 1.7;
         }
 
         .image-frame {
             position: relative;
+            width: 100%;
             max-width: 370px;
             height: 350px;
-            margin: 22px auto;
+            margin: 26px auto;
             overflow: hidden;
-            border: 5px solid #e3ad43;
-            border-radius: 180px 180px 20px 20px;
-            background: linear-gradient(#ffe6a0, #d98a27);
+            border: 5px solid #d7b66c;
+            border-radius: 180px 180px 22px 22px;
+            background: linear-gradient(160deg, #263e5c, #8b6937);
+            box-shadow: 0 0 22px #d9b45c55, inset 0 0 20px #0006;
         }
 
-        #ramImage {
-            display: block;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            clip-path: inset(0 0 100% 0);
-            transition: clip-path 0.5s ease;
+        #puzzleGrid {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(8, 1fr);
+        }
+
+        .puzzle-tile {
+            min-width: 0;
+            min-height: 0;
+            background-repeat: no-repeat;
+            opacity: 0;
+            transform: scale(0.65) rotate(5deg);
+            transition:
+                opacity 0.55s ease,
+                transform 0.65s cubic-bezier(.2, .8, .2, 1);
+            border: 1px solid #d9bd7950;
+        }
+
+        .puzzle-tile.revealed {
+            opacity: 1;
+            transform: scale(1) rotate(0deg);
         }
 
         #imageMessage {
@@ -61,104 +102,158 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 18px;
-            color: #7b2c12;
-            font-weight: bold;
+            padding: 22px;
+            color: #f5df9e;
+            background: #07152b85;
             font-size: 18px;
+            font-weight: bold;
+            line-height: 1.7;
+            text-shadow: 0 2px 8px #000;
             pointer-events: none;
         }
 
         .count-card {
-            margin: 20px 0;
-            padding: 18px 12px;
-            background: #fff0bd;
-            border: 1px solid #e5b34c;
-            border-radius: 18px;
+            margin: 22px 0;
+            padding: 22px 15px;
+            background: linear-gradient(145deg, #1b3555, #102440);
+            border: 1px solid #c7a65b;
+            border-radius: 19px;
+        }
+
+        .count-card h2 {
+            margin-top: 0;
+            color: #e8ca7e;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 20px;
         }
 
         #count {
-            margin: 8px;
-            font-size: 56px;
+            margin: 12px;
+            color: #f1d58c;
+            font-size: 55px;
             font-weight: bold;
-            color: #bd2418;
         }
 
         .remaining {
-            font-size: 19px;
+            color: #e4d5b1;
+            font-size: 18px;
             font-weight: bold;
         }
 
         #remaining {
             display: block;
-            margin: 8px;
+            margin: 9px;
+            color: #f1d58c;
             font-size: 34px;
-            color: #a32b12;
         }
 
         .track {
-            height: 18px;
-            margin: 14px 0 8px;
+            height: 17px;
+            margin: 18px 0 10px;
             overflow: hidden;
-            background: #ead7ae;
-            border: 1px solid #d6a34a;
+            background: #07152b;
+            border: 1px solid #b99a58;
             border-radius: 20px;
         }
 
         #progressBar {
             width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #e46b16, #a91d0b);
-            transition: width 0.4s ease;
+            background: linear-gradient(90deg, #b88b3d, #f5d98c, #c39748);
+            border-radius: 20px;
+            transition: width 0.5s ease;
         }
 
         #progressText {
-            color: #75401c;
+            color: #e8d7b2;
             font-size: 16px;
         }
 
         button {
-            margin: 7px 4px;
-            padding: 13px 18px;
-            border: none;
+            margin: 8px 5px;
+            padding: 13px 19px;
+            border: 1px solid #e2c477;
             border-radius: 12px;
-            color: white;
-            background: #b6380b;
-            font: bold 16px Georgia, serif;
+            color: #132541;
+            background: linear-gradient(135deg, #f1d58c, #c49a4b);
+            font: bold 15px 'Playfair Display', Georgia, serif;
             cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        #resetButton { background: #8b6a25; }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 16px #d8b45c44;
+        }
+
+        #resetButton {
+            color: #f3dfb0;
+            background: #263b57;
+            border-color: #b89b60;
+        }
 
         .blessing {
-            margin-top: 25px;
-            color: #8e1e12;
-            font-size: 24px;
+            margin-top: 28px;
+            color: #edcf80;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 25px;
             font-weight: bold;
         }
 
+        .footer-text {
+            color: #d8c9a8;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
         @media (max-width: 450px) {
-            .container { padding: 20px 13px; }
-            .image-frame { height: 290px; }
+            body {
+                padding: 16px 9px;
+            }
+
+            .container {
+                padding: 22px 13px;
+            }
+
+            .image-frame {
+                height: 290px;
+            }
+
+            .count-card {
+                padding: 18px 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                transition-duration: 0.01ms !important;
+            }
         }
     </style>
 </head>
 
 <body>
     <main class="container">
-        <div style="font-size:32px">🙏 🪷 🙏</div>
+
+        <div class="symbol">🙏 🪷 🙏</div>
 
         <h1>Sri Ram Image Formation</h1>
-        <p>Every chant brings you closer to completing the image.</p>
+
+        <p class="subtitle">
+            Every chant brings you closer to revealing the divine image.
+        </p>
 
         <div class="image-frame">
-            <img id="ramImage" src="sriram.jpg" alt="Lord Sri Ram">
+            <div id="puzzleGrid" aria-label="Sri Ram image gradually revealed as puzzle tiles"></div>
+
             <div id="imageMessage">
-                Continue chanting to reveal the image 🙏
+                Continue chanting to reveal the divine image 🙏
             </div>
         </div>
 
         <section class="count-card">
             <h2>Total Sri Ram Chants</h2>
+
             <div id="count">0</div>
 
             <p class="remaining">
@@ -174,10 +269,14 @@
         </section>
 
         <button id="backButton">← Back to Chanting</button>
-        <button id="resetButton">🔄 Reset Count</button>
+        <button id="resetButton">↻ Reset Count</button>
 
         <div class="blessing">॥ जय श्री राम ॥</div>
-        <p>May Sri Ram bless you with peace and happiness. 🪔</p>
+
+        <p class="footer-text">
+            May Sri Ram bless you with peace and happiness. 🪔
+        </p>
+
     </main>
 
     <script>
@@ -185,31 +284,86 @@
         const remainingDisplay = document.getElementById("remaining");
         const progressBar = document.getElementById("progressBar");
         const progressText = document.getElementById("progressText");
-        const ramImage = document.getElementById("ramImage");
+        const puzzleGrid = document.getElementById("puzzleGrid");
         const imageMessage = document.getElementById("imageMessage");
+
+        const rows = 8;
+        const columns = 8;
+        const totalTiles = rows * columns;
+        const tiles = [];
 
         function readNumber(key, fallback) {
             const value = Number(localStorage.getItem(key));
+
             return Number.isFinite(value) && value >= 0
                 ? value
                 : fallback;
         }
 
+        function createPuzzle() {
+            puzzleGrid.innerHTML = "";
+            tiles.length = 0;
+
+            for (let row = 0; row < rows; row++) {
+                for (let column = 0; column < columns; column++) {
+                    const tile = document.createElement("div");
+
+                    tile.className = "puzzle-tile";
+                    tile.style.backgroundImage = "url('sriram.jpg')";
+                    tile.style.backgroundSize =
+                        `${columns * 100}% ${rows * 100}%`;
+
+                    const x = columns === 1
+                        ? 0
+                        : column / (columns - 1) * 100;
+
+                    const y = rows === 1
+                        ? 0
+                        : row / (rows - 1) * 100;
+
+                    tile.style.backgroundPosition = `${x}% ${y}%`;
+
+                    puzzleGrid.appendChild(tile);
+                    tiles.push(tile);
+                }
+            }
+        }
+
+        function updatePuzzle(progress) {
+            const revealedTiles = Math.floor(
+                progress / 100 * totalTiles
+            );
+
+            tiles.forEach((tile, index) => {
+                tile.classList.toggle(
+                    "revealed",
+                    index < revealedTiles
+                );
+            });
+
+            imageMessage.style.display =
+                progress === 0 ? "flex" : "none";
+        }
+
         function updatePage() {
             const total = readNumber("sriramCount", 0);
-            const target = Math.max(1, readNumber("sriramTarget", 108));
+            const target = Math.max(
+                1,
+                readNumber("sriramTarget", 108)
+            );
+
             const remaining = Math.max(0, target - total);
             const progress = Math.min(100, total / target * 100);
 
             countDisplay.textContent = total;
             remainingDisplay.textContent = remaining;
+
             progressBar.style.width = progress + "%";
-            progressText.textContent = progress.toFixed(1) + "% completed";
 
-            ramImage.style.clipPath =
-                "inset(0 0 " + (100 - progress) + "% 0)";
+            progressText.textContent =
+                progress.toFixed(1) + "% completed";
 
-            imageMessage.style.display = total === 0 ? "flex" : "none";
+            updatePuzzle(progress);
 
             if (total >= target) {
                 progressText.textContent =
@@ -217,24 +371,27 @@
             }
         }
 
-        document.getElementById("backButton").addEventListener("click", () => {
-            window.location.href = "index.html";
-        });
+        document.getElementById("backButton")
+            .addEventListener("click", () => {
+                window.location.href = "jap.html";
+            });
 
-        document.getElementById("resetButton").addEventListener("click", () => {
-            if (confirm("Reset your chant count and image progress?")) {
-                localStorage.setItem("sriramCount", "0");
-                updatePage();
-            }
-        });
+        document.getElementById("resetButton")
+            .addEventListener("click", () => {
+                if (confirm("Reset your chant count and image progress?")) {
+                    localStorage.setItem("sriramCount", "0");
+                    updatePage();
+                }
+            });
 
-        // Update if the first page changes the saved count.
         window.addEventListener("storage", updatePage);
 
-        // Also refresh the display while this page is open.
-        setInterval(updatePage, 1000);
+        window.addEventListener("pageshow", updatePage);
 
+        createPuzzle();
         updatePage();
+
+        setInterval(updatePage, 1000);
     </script>
 </body>
 </html>
