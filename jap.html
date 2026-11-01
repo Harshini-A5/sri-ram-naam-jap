@@ -435,7 +435,13 @@ let savedCount = Number(localStorage.getItem("sriramCount")) || 0;
 let voiceCount = 0;
 let listening = false;
 let recognition = null;
+// Track the current chanting session.
+let sessionCompleted =
+    localStorage.getItem("sriramSessionCompleted") === "true";
 
+// Keep the same assigned image until Reset Count.
+let currentImage =
+    localStorage.getItem("sriramCurrentImage") || "";
 const savedTarget = localStorage.getItem("sriramTarget");
 
 if (
@@ -444,7 +450,11 @@ if (
 ) {
     targetSelect.value = savedTarget;
 }
-
+// Assign an image only if this session has no image yet.
+if (!currentImage) {
+    currentImage = "sriram.jpg";
+    localStorage.setItem("sriramCurrentImage", currentImage);
+}
 function countChants(text) {
     const matches = text.match(/(?:sri|shri|shree)\s*ram/gi);
     return matches ? matches.length : 0;
@@ -463,11 +473,19 @@ function updateDisplay(total) {
     remainingDisplay.textContent = remaining;
     progressBar.style.width = progress + "%";
     progressText.textContent = progress.toFixed(1) + "% completed";
-
     if (remaining === 0) {
-        progressText.textContent =
-            "100% completed — Jai Shri Ram! 🙏";
+    progressText.textContent =
+        "100% completed — Jai Shri Ram! 🙏";
+
+    if (!sessionCompleted) {
+        sessionCompleted = true;
+        localStorage.setItem("sriramSessionCompleted", "true");
+
+        setTimeout(function () {
+            window.location.href = "progress.html";
+        }, 1000);
     }
+}
 
     // Save the total and selected target for the separate progress page.
     localStorage.setItem("sriramCount", String(total));
@@ -491,10 +509,16 @@ resetButton.addEventListener("click", function () {
     savedCount = 0;
     voiceCount = 0;
 
+    sessionCompleted = false;
+    currentImage = "";
+
+    localStorage.removeItem("sriramCurrentImage");
+    localStorage.removeItem("sriramSessionCompleted");
+
     updateDisplay(0);
 
     voiceStatus.textContent =
-        "Count reset! Start chanting again. 🙏";
+        "Count reset! Start a new chanting session. 🙏";
 });
 
 nextButton.addEventListener("click", function () {

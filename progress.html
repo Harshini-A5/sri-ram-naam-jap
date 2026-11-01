@@ -309,7 +309,10 @@
                     const tile = document.createElement("div");
 
                     tile.className = "puzzle-tile";
-                    tile.style.backgroundImage = "url('sriram.jpg')";
+                    const currentImage =
+                        localStorage.getItem("sriramCurrentImage") || "sriram.jpg";
+
+                    tile.style.backgroundImage = `url('${currentImage}')`;
                     tile.style.backgroundSize =
                         `${columns * 100}% ${rows * 100}%`;
 
@@ -380,6 +383,10 @@
             .addEventListener("click", () => {
                 if (confirm("Reset your chant count and image progress?")) {
                     localStorage.setItem("sriramCount", "0");
+                    localStorage.setItem("sriramTarget", "108");
+                    localStorage.removeItem("sriramCurrentImage");
+                    localStorage.removeItem("sriramSessionCompleted");
+
                     updatePage();
                 }
             });
