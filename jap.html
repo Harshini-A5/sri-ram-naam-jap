@@ -170,6 +170,20 @@ button:disabled {
 
     
 
+    
+
+    <label for="sriramInput">✍️ Type your chant:</label>
+    <textarea id="sriramInput" placeholder="Type Sriram or Sri Ram here..."></textarea>
+
+    <p>🎤 Or chant using your microphone:</p>
+    <button id="startVoice" type="button">🎤 Start Chanting</button>
+    <button id="stopVoice" type="button" disabled>⏹ Stop Chanting</button>
+    <button id="resetButton" type="button">🔄 Reset Count</button>
+    <button id="nextButton" type="button">View Image Formation →</button>
+
+    <p id="voiceStatus" role="status">
+        Click Start Chanting to begin.
+    </p>
     <section class="count-card">
         <h2>Total Sri Ram Chants</h2>
         <div id="count" aria-live="polite">0</div>
@@ -192,20 +206,6 @@ button:disabled {
         </div>
         <p id="progressText">0% completed</p>
     </section>
-
-    <label for="sriramInput">✍️ Type your chant:</label>
-    <textarea id="sriramInput" placeholder="Type Sriram or Sri Ram here..."></textarea>
-
-    <p>🎤 Or chant using your microphone:</p>
-    <button id="startVoice" type="button">🎤 Start Chanting</button>
-    <button id="stopVoice" type="button" disabled>⏹ Stop Chanting</button>
-    <button id="resetButton" type="button">🔄 Reset Count</button>
-    <button id="nextButton" type="button">View Image Formation →</button>
-
-    <p id="voiceStatus" role="status">
-        Click Start Chanting to begin.
-    </p>
-
     <div class="blessing">॥ जय श्री राम ॥</div>
     <p>May the divine name of Sri Ram bring peace to your heart. 🪔</p>
 </main>
