@@ -1,516 +1,365 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sri Ram Naam Jap Counter</title>
-
-<style>
-* { box-sizing: border-box; }
-
-body {
-    margin: 0;
-    padding: 24px 12px;
-    min-height: 100vh;
-    font-family: Georgia, serif;
-    text-align: center;
-    color: #702414;
-    background: linear-gradient(135deg, #fff5d8, #ffc66b, #fff0c9);
-}
-
-.container {
-    max-width: 650px;
-    margin: auto;
-    padding: 25px 20px;
-    background: #fffaf0;
-    border: 2px solid #d99b31;
-    border-radius: 26px;
-    box-shadow: 0 12px 35px #8b431c30;
-}
-
-h1 {
-    color: #8e1e12;
-    font-size: clamp(28px, 6vw, 42px);
-    margin-bottom: 8px;
-}
-
-.subtitle { line-height: 1.6; }
-
-.image-frame {
-    position: relative;
-    max-width: 370px;
-    height: 350px;
-    margin: 22px auto;
-    overflow: hidden;
-    border: 5px solid #e3ad43;
-    border-radius: 180px 180px 20px 20px;
-    background: linear-gradient(#ffe6a0, #d98a27);
-    box-shadow: 0 6px 20px #8b431c30;
-}
-
-.ram-image {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    clip-path: inset(0 0 100% 0);
-    transition: clip-path 0.5s ease;
-}
-
-.image-overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    color: #7b2c12;
-    font-size: 18px;
-    font-weight: bold;
-    pointer-events: none;
-}
-
-.count-card {
-    margin: 22px 0;
-    padding: 18px 12px;
-    border: 1px solid #e5b34c;
-    border-radius: 18px;
-    background: #fff0bd;
-}
-
-#count {
-    margin: 8px;
-    color: #bd2418;
-    font-size: 56px;
-    font-weight: bold;
-}
-
-.remaining {
-    font-size: 19px;
-    font-weight: bold;
-}
-
-#remaining {
-    color: #a32b12;
-    font-size: 30px;
-}
-
-.progress-track {
-    width: 100%;
-    height: 18px;
-    margin: 14px 0 8px;
-    overflow: hidden;
-    border-radius: 20px;
-    background: #ead7ae;
-    border: 1px solid #d6a34a;
-}
-
-#progressBar {
-    width: 0%;
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #e46b16, #a91d0b);
-    transition: width 0.4s ease;
-}
-
-#progressText {
-    font-size: 15px;
-    color: #75401c;
-}
-
-textarea {
-    width: 100%;
-    padding: 12px;
-    margin: 7px 0;
-    border: 2px solid #e5b34c;
-    border-radius: 12px;
-    background: #fffdf6;
-    color: #642a18;
-    font: 17px Georgia, serif;
-}
-
-textarea {
-    min-height: 110px;
-    resize: vertical;
-}
-
-label {
-    display: block;
-    margin-top: 18px;
-    text-align: left;
-    font-weight: bold;
-}
-
-button {
-    padding: 13px 17px;
-    margin: 7px 4px;
-    border: none;
-    border-radius: 12px;
-    color: white;
-    background: #b6380b;
-    font: bold 16px Georgia, serif;
-    cursor: pointer;
-}
-
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-#stopVoice { background: #795b50; }
-#resetButton { background: #8b6a25; }
-#nextButton { background: #6f2c15; }
-
-#voiceStatus {
-    overflow-wrap: anywhere;
-    padding: 12px;
-    border-radius: 15px;
-    background: #fff0c3;
-    line-height: 1.5;
-}
-
-.blessing {
-    margin-top: 24px;
-    font-size: 23px;
-    font-weight: bold;
-    color: #8e1e12;
-}
-
-@media (max-width: 450px) {
-    .container { padding: 20px 13px; }
-    .image-frame { height: 290px; }
-}
-</style>
-</head>
-
-<body>
-    <div style="text-align: right; padding: 12px 20px;">
-  <a href="./login.html"
-     style="display: inline-block; padding: 10px 18px;
-            background: #a33a0a; color: white;
-            text-decoration: none; border-radius: 8px;
-            font-weight: bold;">
-    Login / Sign Up
-  </a>
-</div>
-<main class="container">
-    <div style="font-size:32px">🙏 🪷 🙏</div>
-
-    <h1>Sri Ram Naam Jap</h1>
-    <p class="subtitle">
-        Chant with devotion • Feel the peace • Jai Shri Ram
-    </p>
-
-    <div class="image-frame">
-        <img src="sriram.jpg" alt="Lord Sri Ram" class="ram-image" id="ramImage">
-        <div class="image-overlay" id="imageMessage">
-            Chant Sri Ram to reveal the image 🙏
-        </div>
-    </div>
-
-    <section class="count-card">
-        <h2>Total Sri Ram Chants</h2>
-        <div id="count" aria-live="polite">0</div>
-
-        <label for="target">Choose your image completion target:</label>
-        <select id="target" style="width:100%;padding:10px;margin-top:8px;border-radius:10px;border:1px solid #d99b31;font-size:16px">
-            <option value="108">108 chants</option>
-            <option value="51">51 chants</option>
-            <option value="100">100 chants</option>
-            <option value="1008">1008 chants</option>
-        </select>
-
-        <p class="remaining">
-            Chants remaining to complete the image:
-            <br><span id="remaining">108</span>
-        </p>
-
-        <div class="progress-track">
-            <div id="progressBar"></div>
-        </div>
-        <p id="progressText">0% completed</p>
-    </section>
-
-    <label for="sriramInput">✍️ Type your chant:</label>
-    <textarea id="sriramInput" placeholder="Type Sriram or Sri Ram here..."></textarea>
-
-    <p>🎤 Or chant using your microphone:</p>
-    <button id="startVoice" type="button">🎤 Start Chanting</button>
-    <button id="stopVoice" type="button" disabled>⏹ Stop Chanting</button>
-    <button id="resetButton" type="button">🔄 Reset Count</button>
-    <button id="nextButton" type="button">View Image Formation →</button>
-
-    <p id="voiceStatus" role="status">
-        Click Start Chanting to begin.
-    </p>
-
-    <div class="blessing">॥ जय श्री राम ॥</div>
-    <p>May the divine name of Sri Ram bring peace to your heart. 🪔</p>
-</main>
-
-<script>
-const input = document.getElementById("sriramInput");
-const countDisplay = document.getElementById("count");
-const targetSelect = document.getElementById("target");
-const remainingDisplay = document.getElementById("remaining");
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
-const ramImage = document.getElementById("ramImage");
-const imageMessage = document.getElementById("imageMessage");
-const startButton = document.getElementById("startVoice");
-const stopButton = document.getElementById("stopVoice");
-const resetButton = document.getElementById("resetButton");
-const nextButton = document.getElementById("nextButton");
-const voiceStatus = document.getElementById("voiceStatus");
-
-// Keep the saved total when returning from progress.html or refreshing.
-let savedCount = Number(localStorage.getItem("sriramCount")) || 0;
-let voiceCount = 0;
-let listening = false;
-let recognition = null;
-
-const savedTarget = localStorage.getItem("sriramTarget");
-if (savedTarget && [...targetSelect.options].some(option => option.value === savedTarget)) {
-    targetSelect.value = savedTarget;
-}
-
-function countChants(text) {
-    const matches = text.match(/sri\s*ram/gi);
-    return matches ? matches.length : 0;
-}
-
-function getCurrentTotal() {
-    return savedCount + countChants(input.value) + voiceCount;
-}
-
-function updateDisplay(total) {
-    const target = Number(targetSelect.value);
-    const remaining = Math.max(0, target - total);
-    const progress = Math.min(100, (total / target) * 100);
-
-    countDisplay.textContent = total;
-    remainingDisplay.textContent = remaining;
-    progressBar.style.width = progress + "%";
-    progressText.textContent = progress.toFixed(1) + "% completed";
-
-    // Reveal the existing image gradually as the count increases.
-    ramImage.style.clipPath = "inset(0 0 " + (100 - progress) + "% 0)";
-
-    if (total === 0) {
-        imageMessage.textContent = "Chant Sri Ram to reveal the image 🙏";
-        imageMessage.style.display = "flex";
-    } else {
-        imageMessage.style.display = "none";
-    }
-
-    if (remaining === 0) {
-        progressText.textContent = "100% completed — Jai Shri Ram! 🙏";
-    }
-
-    // Save the total and selected target for the separate progress page.
-    localStorage.setItem("sriramCount", String(total));
-    localStorage.setItem("sriramTarget", String(target));
-}
-
-input.addEventListener("input", function () {
-    updateDisplay(getCurrentTotal());
-});
-
-targetSelect.addEventListener("change", function () {
-    updateDisplay(getCurrentTotal());
-});
-
-resetButton.addEventListener("click", function () {
-    if (recognition && listening) {
-        recognition.stop();
-    }
-
-    input.value = "";
-    savedCount = 0;
-    voiceCount = 0;
-    updateDisplay(0);
-    voiceStatus.textContent = "Count reset! Start chanting again. 🙏";
-});
-
-nextButton.addEventListener("click", function () {
-    updateDisplay(getCurrentTotal());
-    window.location.href = "progress.html";
-});
-
-const SpeechRecognition =
-    window.SpeechRecognition || window.webkitSpeechRecognition;
-
-if (!SpeechRecognition) {
-    voiceStatus.textContent =
-        "Voice recognition is unavailable. Try opening this page in Google Chrome.";
-    startButton.disabled = true;
-} else {
-    recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = "en-IN";
-
-    startButton.addEventListener("click", function () {
-        if (listening) return;
-
-        listening = true;
-        startButton.disabled = true;
-        stopButton.disabled = false;
-        voiceStatus.textContent = "Starting microphone...";
-
-        try {
-            recognition.start();
-        } catch (error) {
-            listening = false;
-            startButton.disabled = false;
-            stopButton.disabled = true;
-            voiceStatus.textContent = "Could not start: " + error.message;
-        }
-    });
-
-    recognition.onstart = function () {
-        voiceStatus.textContent = "🎤 Listening! Chant Sri Ram now...";
-    };
-
-    recognition.onresult = function (event) {
-        let transcript = "";
-        let confirmedTranscript = "";
-
-        for (let i = 0; i < event.results.length; i++) {
-            const words = event.results[i][0].transcript;
-            transcript += words + " ";
-
-            if (event.results[i].isFinal) {
-                confirmedTranscript += words + " ";
-            }
-        }
-
-        voiceStatus.textContent = transcript.trim()
-            ? "I heard: " + transcript.trim()
-            : "Listening for Sri Ram...";
-
-        voiceCount = countChants(confirmedTranscript);
-        updateDisplay(getCurrentTotal());
-    };
-
-    recognition.onerror = function (event) {
-        voiceStatus.textContent = "Voice recognition error: " + event.error;
-    };
-
-    recognition.onend = function () {
-        listening = false;
-        startButton.disabled = false;
-        stopButton.disabled = true;
-    };
-
-    stopButton.addEventListener("click", function () {
-        if (recognition && listening) {
-            voiceStatus.textContent = "Stopping microphone...";
-            recognition.stop();
-        }
-    });
-}
-
-// Display the saved count as soon as the page opens.
-updateDisplay(getCurrentTotal());
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="./supabase.js"></script>
-
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sri Ram Naam Jap - Login</title>
+
+  <title>Sri Ram Naam Jap | A Divine Journey</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #081629;
+      --navy-light: #142b49;
+      --gold: #d9b66f;
+      --gold-light: #f4dfaa;
+      --cream: #f8efd9;
+      --saffron: #d88735;
+      --muted: #c9bea7;
+    }
 
     body {
-      margin: 0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #fff3d6, #f6c56e);
-      color: #5b260c;
+      padding: 30px 18px;
+      font-family: "Playfair Display", Georgia, serif;
+      color: var(--cream);
+      background:
+        radial-gradient(ellipse at 50% 0%, #29466d 0%, transparent 48%),
+        radial-gradient(circle at 10% 90%, #8c552522, transparent 35%),
+        linear-gradient(145deg, #050d19, var(--navy), #101f38);
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "✦";
+      position: fixed;
+      color: #e5c77b35;
+      font-size: 150px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      top: 5%;
+      left: 5%;
+    }
+
+    body::after {
+      bottom: 4%;
+      right: 5%;
     }
 
     .card {
+      position: relative;
+      z-index: 1;
       width: 100%;
-      max-width: 400px;
-      padding: 30px 24px;
-      background: #fffaf0;
-      border-radius: 18px;
-      box-shadow: 0 8px 25px #6b320b30;
+      max-width: 465px;
+      padding: 42px 34px 32px;
       text-align: center;
+      border: 1px solid var(--gold);
+      border-radius: 24px;
+      background:
+        linear-gradient(155deg, #1b3454 0%, #10213a 55%, #0b192d 100%);
+      box-shadow:
+        0 25px 70px #0009,
+        inset 0 0 35px #e0bd6520;
+      animation: appear 0.9s ease both;
     }
 
-    h1 { margin-top: 0; color: #a33a0a; }
-    p { line-height: 1.5; }
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ornament {
+      color: var(--gold);
+      font-size: 25px;
+      letter-spacing: 9px;
+      margin-bottom: 19px;
+    }
+
+    .symbol {
+      width: 82px;
+      height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 19px;
+      border: 1px solid #d9b66f88;
+      border-radius: 50%;
+      background: #d9b66f12;
+      box-shadow: 0 0 25px #d9b66f20;
+      font-size: 39px;
+    }
+
+    h1 {
+      color: var(--gold-light);
+      font-family: "Cinzel", Georgia, serif;
+      font-size: clamp(25px, 6vw, 34px);
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 25px 0;
+      color: var(--gold);
+      font-size: 13px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #c9a45c);
+    }
+
+    .divider::after {
+      background: linear-gradient(90deg, #c9a45c, transparent);
+    }
+
+    form {
+      width: 100%;
+    }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin: 8px 0;
-      border: 1px solid #d9a66b;
-      border-radius: 8px;
-      font-size: 16px;
+      padding: 15px 16px;
+      margin: 9px 0;
+      border: 1px solid #c9ad77;
+      border-radius: 11px;
+      outline: none;
+      background: #f8f1e3;
+      color: #17243a;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      transition: 0.25s ease;
+    }
+
+    input::placeholder {
+      color: #777064;
+    }
+
+    input:focus {
+      border-color: #f4d58e;
+      box-shadow: 0 0 0 3px #e5c47730;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #a33a0a;
-      color: white;
+      padding: 15px;
+      margin-top: 13px;
+      border: 1px solid #edce8d;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #e8c779, #bd873b);
+      color: #17233a;
+      font-family: "Playfair Display", Georgia, serif;
       font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
       cursor: pointer;
+      transition: 0.25s ease;
     }
 
-    button:hover { background: #7d2905; }
-    .google { background: #fff; color: #333; border: 1px solid #ccc; }
-    .switch { background: transparent; color: #a33a0a; }
-    #message { overflow-wrap: anywhere; font-size: 14px; }
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 20px #d9b66f35;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .switch {
+      margin-top: 13px;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      color: var(--gold-light);
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+      font-weight: normal;
+    }
+
+    .switch:hover {
+      box-shadow: none;
+      text-decoration: underline;
+    }
+
+    .google {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 8px;
+      border: 1px solid #d9cba9;
+      background: #f8f5ed;
+      color: #25334a;
+      font-family: Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .google:hover {
+      background: #eee8db;
+    }
+
+    #message {
+      min-height: 22px;
+      margin-top: 17px;
+      color: var(--gold-light);
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .blessing {
+      margin-top: 27px;
+      color: var(--gold);
+      font-size: 21px;
+      letter-spacing: 1px;
+    }
+
+    .footer {
+      margin-top: 9px;
+      color: #b9ad96;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 18px 13px;
+      }
+
+      .card {
+        padding: 32px 21px 25px;
+      }
+
+      .symbol {
+        width: 72px;
+        height: 72px;
+        font-size: 34px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
   </style>
 </head>
+
 <body>
+
   <main class="card">
-    <h1>🙏 Sri Ram Naam Jap</h1>
-    <p id="description">Sign in to save your chanting progress.</p>
+
+    <div class="ornament">✦ ─ 🪷 ─ ✦</div>
+
+    <div class="symbol">🙏</div>
+
+    <h1>Sri Ram Naam Jap</h1>
+
+    <p class="subtitle" id="description">
+      Begin your divine journey with the sacred name of Lord Sri Ram.
+      Sign in to continue your chanting journey.
+    </p>
+
+    <div class="divider">
+      <span>॥ जय श्री राम ॥</span>
+    </div>
 
     <form id="authForm">
-      <input id="email" type="email" placeholder="Email address"
-             autocomplete="email" required>
-      <input id="password" type="password" placeholder="Password"
-             autocomplete="current-password" minlength="6" required>
-      <button id="submitBtn" type="submit">Login</button>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required
+      >
+
+      <input
+        id="password"
+        type="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        minlength="6"
+        required
+      >
+
+      <button id="submitBtn" type="submit">
+        Login
+      </button>
+
     </form>
 
     <button class="switch" id="switchBtn" type="button">
       New here? Create an account
     </button>
 
+    <div class="divider">
+      <span>OR</span>
+    </div>
+
     <button class="google" id="googleBtn" type="button">
+      <span>G</span>
       Continue with Google
     </button>
 
-    <p id="message" role="status"></p>
+    <p id="message" role="status" aria-live="polite"></p>
+
+    <div class="blessing">॥ श्री राम जय राम जय जय राम ॥</div>
+
+    <p class="footer">
+      May the divine name of Sri Ram bring peace, strength and happiness to your heart.
+    </p>
+
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="./supabase.js"></script>
+
   <script>
     const client = window.supabaseClient;
+
     const form = document.getElementById("authForm");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -528,14 +377,21 @@ updateDisplay(getCurrentTotal());
 
     switchBtn.addEventListener("click", () => {
       isSignup = !isSignup;
+
       submitBtn.textContent = isSignup ? "Create Account" : "Login";
+
       switchBtn.textContent = isSignup
         ? "Already registered? Login"
         : "New here? Create an account";
+
       description.textContent = isSignup
-        ? "Create an account to save your chanting progress."
-        : "Sign in to save your chanting progress.";
-      passwordInput.autocomplete = isSignup ? "new-password" : "current-password";
+        ? "Create your account and begin your divine chanting journey."
+        : "Begin your divine journey with the sacred name of Lord Sri Ram. Sign in to continue your chanting journey.";
+
+      passwordInput.autocomplete = isSignup
+        ? "new-password"
+        : "current-password";
+
       showMessage("");
     });
 
@@ -559,7 +415,8 @@ updateDisplay(getCurrentTotal());
             email,
             password,
             options: {
-              emailRedirectTo: window.location.origin + window.location.pathname
+              emailRedirectTo:
+                window.location.origin + window.location.pathname
             }
           });
 
@@ -568,8 +425,11 @@ updateDisplay(getCurrentTotal());
           if (data.session) {
             window.location.href = "./jap.html";
           } else {
-            showMessage("Account created. Check your email to confirm, then log in.");
+            showMessage(
+              "Account created. Check your email to confirm, then log in."
+            );
           }
+
         } else {
           const { error } = await client.auth.signInWithPassword({
             email,
@@ -577,8 +437,10 @@ updateDisplay(getCurrentTotal());
           });
 
           if (error) throw error;
+
           window.location.href = "./jap.html";
         }
+
       } catch (error) {
         showMessage(error.message || "Something went wrong.");
       } finally {
@@ -599,13 +461,13 @@ updateDisplay(getCurrentTotal());
         const { error } = await client.auth.signInWithOAuth({
           provider: "google",
           options: {
-            // redirectTo: window.location.origin + "/sri-ram-naam-jap/"
-            // redirectTo: "https://harshini-a5.github.io/sri-ram-naam-jap/"
-            redirectTo: "https://harshini-a5.github.io/sri-ram-naam-jap/jap.html"
+            redirectTo:
+              "https://harshini-a5.github.io/sri-ram-naam-jap/jap.html"
           }
         });
 
         if (error) throw error;
+
       } catch (error) {
         showMessage(error.message || "Google sign-in failed.");
         googleBtn.disabled = false;
@@ -613,9 +475,13 @@ updateDisplay(getCurrentTotal());
     });
 
     client?.auth.getSession().then(({ data, error }) => {
-      if (error) showMessage(error.message);
-      else if (data.session) window.location.href = "./jap.html";
+      if (error) {
+        showMessage(error.message);
+      } else if (data.session) {
+        window.location.href = "./jap.html";
+      }
     });
   </script>
+
 </body>
 </html>
