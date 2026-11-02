@@ -374,11 +374,20 @@
             }
         }
 
-        document.getElementById("backButton")
-            .addEventListener("click", () => {
-                window.location.href = "jap.html";
-            });
+      document.getElementById("backButton")
+    .addEventListener("click", () => {
 
+        const completed =
+            localStorage.getItem("sriramSessionCompleted") === "true";
+
+        if (completed) {
+            localStorage.setItem("sriramCount", "0");
+            localStorage.removeItem("sriramSessionCompleted");
+            localStorage.removeItem("sriramCurrentImage");
+        }
+
+        window.location.href = "jap.html";
+    });
         document.getElementById("resetButton")
             .addEventListener("click", () => {
                 if (confirm("Reset your chant count and image progress?")) {
