@@ -36,14 +36,20 @@
             max-width: 1250px;
             min-height: calc(100vh - 24px);
             margin: auto;
-            padding: 16px 24px;
+            padding: 16px 22px;
             display: flex;
             flex-direction: column;
+            align-items: center;
             background: linear-gradient(145deg, #142c4b, #0b1b32);
             border: 2px solid #c7a65b;
             border-radius: 22px;
             box-shadow: 0 15px 45px #0008,
                         inset 0 0 25px #d5b66b12;
+        }
+
+        header {
+            width: 100%;
+            flex-shrink: 0;
         }
 
         .symbol {
@@ -69,7 +75,8 @@
 
         .count-card {
             width: 100%;
-            margin: 0 auto 12px;
+            flex-shrink: 0;
+            margin: 0 auto 14px;
             padding: 12px 18px;
             background: linear-gradient(145deg, #1b3555, #102440);
             border: 1px solid #c7a65b;
@@ -134,12 +141,13 @@
             font-size: 14px;
         }
 
+        /* Responsive portrait image area */
         .image-frame {
             position: relative;
-            flex: 1;
-            width: 100%;
-            min-height: 320px;
-            margin: 0 auto 12px;
+            width: min(100%, 680px);
+            aspect-ratio: 4 / 5;
+            flex-shrink: 0;
+            margin: 0 auto 14px;
             overflow: hidden;
             border: 5px solid #d7b66c;
             border-radius: 22px;
@@ -192,6 +200,7 @@
         .bottom-section {
             width: 100%;
             margin-top: auto;
+            flex-shrink: 0;
         }
 
         .button-row {
@@ -239,6 +248,18 @@
             line-height: 1.5;
         }
 
+        /* Tablet */
+        @media (max-width: 800px) {
+            .container {
+                padding: 14px;
+            }
+
+            .image-frame {
+                width: min(100%, 600px);
+            }
+        }
+
+        /* Mobile */
         @media (max-width: 600px) {
             body {
                 padding: 7px;
@@ -255,7 +276,7 @@
             }
 
             h1 {
-                font-size: 23px;
+                font-size: clamp(20px, 6vw, 27px);
             }
 
             .subtitle {
@@ -265,7 +286,11 @@
 
             .count-card {
                 padding: 10px;
-                margin-bottom: 9px;
+                margin-bottom: 10px;
+            }
+
+            .count-card h2 {
+                font-size: 15px;
             }
 
             #count {
@@ -273,7 +298,8 @@
             }
 
             .image-frame {
-                min-height: 300px;
+                width: min(100%, 500px);
+                aspect-ratio: 4 / 5;
                 border-width: 4px;
                 border-radius: 18px;
             }
@@ -289,16 +315,6 @@
 
             .footer-text {
                 font-size: 12px;
-            }
-        }
-
-        @media (max-height: 650px) and (min-width: 601px) {
-            .container {
-                min-height: 620px;
-            }
-
-            .image-frame {
-                min-height: 260px;
             }
         }
 
@@ -399,8 +415,8 @@
                     const tile = document.createElement("div");
 
                     tile.className = "puzzle-tile";
-
                     tile.style.backgroundImage = `url('${currentImage}')`;
+
                     tile.style.backgroundSize =
                         `${columns * 100}% ${rows * 100}%`;
 
@@ -458,21 +474,16 @@
             }
         }
 
-        // Return to chanting without changing the count or target.
+        // Return to chanting while preserving count and target.
         document.getElementById("backButton")
             .addEventListener("click", () => {
-
-                // Clear only the completion flag.
-                // Keep the count, target and current image.
                 localStorage.removeItem("sriramSessionCompleted");
-
                 window.location.href = "jap.html";
             });
 
-        // Reset the current chanting progress.
+        // Reset current chanting progress.
         document.getElementById("resetButton")
             .addEventListener("click", () => {
-
                 if (confirm("Reset your chant count and image progress?")) {
                     localStorage.setItem("sriramCount", "0");
                     localStorage.setItem("sriramTarget", "108");
