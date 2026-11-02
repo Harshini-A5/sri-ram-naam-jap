@@ -15,12 +15,16 @@
             box-sizing: border-box;
         }
 
+        html {
+            min-height: 100%;
+        }
+
         body {
             margin: 0;
-            padding: 28px 14px;
+            padding: 12px;
             min-height: 100vh;
-            text-align: center;
             color: #f7edcf;
+            text-align: center;
             font-family: 'Playfair Display', Georgia, serif;
             background:
                 radial-gradient(circle at top, #263d62, transparent 48%),
@@ -29,46 +33,119 @@
 
         .container {
             width: 100%;
-            max-width: 680px;
+            max-width: 1250px;
+            min-height: calc(100vh - 24px);
             margin: auto;
-            padding: 28px 22px;
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
             background: linear-gradient(145deg, #142c4b, #0b1b32);
             border: 2px solid #c7a65b;
-            border-radius: 24px;
-            box-shadow: 0 15px 45px #0008, inset 0 0 25px #d5b66b12;
+            border-radius: 22px;
+            box-shadow: 0 15px 45px #0008,
+                        inset 0 0 25px #d5b66b12;
         }
 
         .symbol {
             color: #e5c778;
-            font-size: 30px;
-            margin-bottom: 10px;
+            font-size: 27px;
+            margin-bottom: 3px;
         }
 
         h1 {
-            margin: 12px 0;
+            margin: 5px 0;
             color: #e8ca7e;
             font-family: 'Cinzel', Georgia, serif;
-            font-size: clamp(25px, 6vw, 39px);
+            font-size: clamp(23px, 4vw, 36px);
             letter-spacing: 1px;
         }
 
         .subtitle {
+            margin: 4px 0 12px;
             color: #e1d4b2;
-            font-size: 16px;
-            line-height: 1.7;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .count-card {
+            width: 100%;
+            margin: 0 auto 12px;
+            padding: 12px 18px;
+            background: linear-gradient(145deg, #1b3555, #102440);
+            border: 1px solid #c7a65b;
+            border-radius: 16px;
+        }
+
+        .count-card h2 {
+            margin: 0;
+            color: #e8ca7e;
+            font-family: 'Cinzel', Georgia, serif;
+            font-size: 17px;
+        }
+
+        #count {
+            margin: 4px 0;
+            color: #f1d58c;
+            font-size: 42px;
+            font-weight: bold;
+        }
+
+        .remaining {
+            margin: 3px 0;
+            color: #e4d5b1;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        #remaining {
+            display: inline-block;
+            margin-left: 5px;
+            color: #f1d58c;
+            font-size: 23px;
+        }
+
+        .track {
+            width: 100%;
+            max-width: 700px;
+            height: 13px;
+            margin: 10px auto 5px;
+            overflow: hidden;
+            background: #07152b;
+            border: 1px solid #b99a58;
+            border-radius: 20px;
+        }
+
+        #progressBar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #b88b3d,
+                #f5d98c,
+                #c39748
+            );
+            border-radius: 20px;
+            transition: width 0.5s ease;
+        }
+
+        #progressText {
+            margin: 4px 0 0;
+            color: #e8d7b2;
+            font-size: 14px;
         }
 
         .image-frame {
             position: relative;
+            flex: 1;
             width: 100%;
-            max-width: 370px;
-            height: 350px;
-            margin: 26px auto;
+            min-height: 320px;
+            margin: 0 auto 12px;
             overflow: hidden;
             border: 5px solid #d7b66c;
-            border-radius: 180px 180px 22px 22px;
+            border-radius: 22px;
             background: linear-gradient(160deg, #263e5c, #8b6937);
-            box-shadow: 0 0 22px #d9b45c55, inset 0 0 20px #0006;
+            box-shadow: 0 0 25px #d9b45c55,
+                        inset 0 0 20px #0006;
         }
 
         #puzzleGrid {
@@ -105,73 +182,28 @@
             padding: 22px;
             color: #f5df9e;
             background: #07152b85;
-            font-size: 18px;
+            font-size: clamp(16px, 2vw, 22px);
             font-weight: bold;
             line-height: 1.7;
             text-shadow: 0 2px 8px #000;
             pointer-events: none;
         }
 
-        .count-card {
-            margin: 22px 0;
-            padding: 22px 15px;
-            background: linear-gradient(145deg, #1b3555, #102440);
-            border: 1px solid #c7a65b;
-            border-radius: 19px;
+        .bottom-section {
+            width: 100%;
+            margin-top: auto;
         }
 
-        .count-card h2 {
-            margin-top: 0;
-            color: #e8ca7e;
-            font-family: 'Cinzel', Georgia, serif;
-            font-size: 20px;
-        }
-
-        #count {
-            margin: 12px;
-            color: #f1d58c;
-            font-size: 55px;
-            font-weight: bold;
-        }
-
-        .remaining {
-            color: #e4d5b1;
-            font-size: 18px;
-            font-weight: bold;
-        }
-
-        #remaining {
-            display: block;
-            margin: 9px;
-            color: #f1d58c;
-            font-size: 34px;
-        }
-
-        .track {
-            height: 17px;
-            margin: 18px 0 10px;
-            overflow: hidden;
-            background: #07152b;
-            border: 1px solid #b99a58;
-            border-radius: 20px;
-        }
-
-        #progressBar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #b88b3d, #f5d98c, #c39748);
-            border-radius: 20px;
-            transition: width 0.5s ease;
-        }
-
-        #progressText {
-            color: #e8d7b2;
-            font-size: 16px;
+        .button-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         button {
-            margin: 8px 5px;
-            padding: 13px 19px;
+            margin: 3px;
+            padding: 12px 22px;
             border: 1px solid #e2c477;
             border-radius: 12px;
             color: #132541;
@@ -193,34 +225,80 @@
         }
 
         .blessing {
-            margin-top: 28px;
+            margin: 8px 0 2px;
             color: #edcf80;
             font-family: 'Cinzel', Georgia, serif;
-            font-size: 25px;
+            font-size: 23px;
             font-weight: bold;
         }
 
         .footer-text {
+            margin: 2px 0 0;
             color: #d8c9a8;
-            font-size: 15px;
-            line-height: 1.7;
+            font-size: 13px;
+            line-height: 1.5;
         }
 
-        @media (max-width: 450px) {
+        @media (max-width: 600px) {
             body {
-                padding: 16px 9px;
+                padding: 7px;
             }
 
             .container {
-                padding: 22px 13px;
+                min-height: calc(100vh - 14px);
+                padding: 12px 10px;
+                border-radius: 17px;
             }
 
-            .image-frame {
-                height: 290px;
+            .symbol {
+                font-size: 23px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+                margin-bottom: 9px;
             }
 
             .count-card {
-                padding: 18px 10px;
+                padding: 10px;
+                margin-bottom: 9px;
+            }
+
+            #count {
+                font-size: 35px;
+            }
+
+            .image-frame {
+                min-height: 300px;
+                border-width: 4px;
+                border-radius: 18px;
+            }
+
+            button {
+                padding: 11px 15px;
+                font-size: 13px;
+            }
+
+            .blessing {
+                font-size: 20px;
+            }
+
+            .footer-text {
+                font-size: 12px;
+            }
+        }
+
+        @media (max-height: 650px) and (min-width: 601px) {
+            .container {
+                min-height: 620px;
+            }
+
+            .image-frame {
+                min-height: 260px;
             }
         }
 
@@ -235,21 +313,15 @@
 <body>
     <main class="container">
 
-        <div class="symbol">🙏 🪷 🙏</div>
+        <header>
+            <div class="symbol">🙏 🪷 🙏</div>
 
-        <h1>Sri Ram Image Formation</h1>
+            <h1>Sri Ram Image Formation</h1>
 
-        <p class="subtitle">
-            Every chant brings you closer to revealing the divine image.
-        </p>
-
-        <div class="image-frame">
-            <div id="puzzleGrid" aria-label="Sri Ram image gradually revealed as puzzle tiles"></div>
-
-            <div id="imageMessage">
-                Continue chanting to reveal the divine image 🙏
-            </div>
-        </div>
+            <p class="subtitle">
+                Every chant brings you closer to revealing the divine image.
+            </p>
+        </header>
 
         <section class="count-card">
             <h2>Total Sri Ram Chants</h2>
@@ -268,14 +340,29 @@
             <p id="progressText">0% completed</p>
         </section>
 
-        <button id="backButton">← Back to Chanting</button>
-        <button id="resetButton">↻ Reset Count</button>
+        <div class="image-frame">
+            <div
+                id="puzzleGrid"
+                aria-label="Sri Ram image gradually revealed as puzzle tiles">
+            </div>
 
-        <div class="blessing">॥ जय श्री राम ॥</div>
+            <div id="imageMessage">
+                Continue chanting to reveal the divine image 🙏
+            </div>
+        </div>
 
-        <p class="footer-text">
-            May Sri Ram bless you with peace and happiness. 🪔
-        </p>
+        <footer class="bottom-section">
+            <div class="button-row">
+                <button id="backButton">← Back to Chanting</button>
+                <button id="resetButton">↻ Reset Count</button>
+            </div>
+
+            <div class="blessing">॥ जय श्री राम ॥</div>
+
+            <p class="footer-text">
+                May Sri Ram bless you with peace and happiness. 🪔
+            </p>
+        </footer>
 
     </main>
 
@@ -304,25 +391,21 @@
             puzzleGrid.innerHTML = "";
             tiles.length = 0;
 
+            const currentImage =
+                localStorage.getItem("sriramCurrentImage") || "sriram.jpg";
+
             for (let row = 0; row < rows; row++) {
                 for (let column = 0; column < columns; column++) {
                     const tile = document.createElement("div");
 
                     tile.className = "puzzle-tile";
-                    const currentImage =
-                        localStorage.getItem("sriramCurrentImage") || "sriram.jpg";
 
                     tile.style.backgroundImage = `url('${currentImage}')`;
                     tile.style.backgroundSize =
                         `${columns * 100}% ${rows * 100}%`;
 
-                    const x = columns === 1
-                        ? 0
-                        : column / (columns - 1) * 100;
-
-                    const y = rows === 1
-                        ? 0
-                        : row / (rows - 1) * 100;
+                    const x = column / (columns - 1) * 100;
+                    const y = row / (rows - 1) * 100;
 
                     tile.style.backgroundPosition = `${x}% ${y}%`;
 
@@ -350,6 +433,7 @@
 
         function updatePage() {
             const total = readNumber("sriramCount", 0);
+
             const target = Math.max(
                 1,
                 readNumber("sriramTarget", 108)
@@ -374,25 +458,25 @@
             }
         }
 
-      document.getElementById("backButton")
-    .addEventListener("click", () => {
+        // Return to chanting without changing the count or target.
+        document.getElementById("backButton")
+            .addEventListener("click", () => {
 
-        const completed =
-            localStorage.getItem("sriramSessionCompleted") === "true";
+                // Clear only the completion flag.
+                // Keep the count, target and current image.
+                localStorage.removeItem("sriramSessionCompleted");
 
-        if (completed) {
-            localStorage.setItem("sriramCount", "0");
-            localStorage.removeItem("sriramSessionCompleted");
-            localStorage.removeItem("sriramCurrentImage");
-        }
+                window.location.href = "jap.html";
+            });
 
-        window.location.href = "jap.html";
-    });
+        // Reset the current chanting progress.
         document.getElementById("resetButton")
             .addEventListener("click", () => {
+
                 if (confirm("Reset your chant count and image progress?")) {
                     localStorage.setItem("sriramCount", "0");
                     localStorage.setItem("sriramTarget", "108");
+
                     localStorage.removeItem("sriramCurrentImage");
                     localStorage.removeItem("sriramSessionCompleted");
 
@@ -401,7 +485,6 @@
             });
 
         window.addEventListener("storage", updatePage);
-
         window.addEventListener("pageshow", updatePage);
 
         createPuzzle();
